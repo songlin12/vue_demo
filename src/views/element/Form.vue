@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="活动名称">
         <el-input v-model="form.name"></el-input>
@@ -44,7 +44,16 @@
         <el-button>取消</el-button>
       </el-form-item>
     </el-form>
-  </div>
+  </div>-->
+  <el-form ref="form" :model="form" label-width="80px">
+    <el-form-item :label="item.label" v-for="(item,index) in formLabel" :key="index">
+      <el-input v-model="form[item.key]" v-if="item.type === 'input'"></el-input>
+      <el-select v-model="form[item.key]" placeholder="请选择活动区域" v-if="item.type === 'select'">
+          <el-option v-for="(subitem,index) in item.options" :key="index" :label="subitem.label" :value="subitem.value"></el-option>
+      </el-select>
+      <el-date-picker v-if="item.type === 'date-picker'" v-model="form[item.key]" type="date" placeholder="选择日期" style="width: 100%;"></el-date-picker>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
@@ -61,6 +70,29 @@ export default {
         resource: "",
         desc: "",
       },
+      formLabel: [
+        {
+          label: "活动名称",
+          key: "name",
+          type: "input",
+        },
+        {
+          label: "活动区域",
+          key: "region",
+          type: "select",
+          options: [
+            {
+              label: '区域1',
+              value: 'shanghai'
+            }
+          ]
+        },
+        {
+          label: "活动时间",
+          key: "date1",
+          type: "date-picker",
+        },
+      ],
     };
   },
   methods: {
